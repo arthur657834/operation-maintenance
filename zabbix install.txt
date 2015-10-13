@@ -1,0 +1,81 @@
+http://www.zabbix.org/wiki/InstallOnCentOS_RHEL
+
+groupadd zabbix
+useradd -g zabbix zabbix
+echo 123456 | passwd zabbix
+
+
+service端安装:
+
+sed -i 's/HOSTNAME=localhost.localdomain/HOSTNAME=zabbix-server/' /etc/sysconfig/network
+
+rpm --import http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX
+rpm -Uv  http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm  //注意安装的linux版本
+
+rpm -ivh jdk-8u60-linux-x64.rpm;
+echo export JAVA_HOME=/usr/java/jdk1.8.0_60 >>/etc/profile;
+echo export PATH=\$JAVA_HOME/bin:\$PATH >>/etc/profile;
+echo export CLASSPATH=.:\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar:\$JAVA_HOME/jre/lib/rt.jar >>/etc/profile;
+source /etc/profile;
+yum -y install httpd php php-xml php-mbstring php-gd php-bcmath curl curl-devel net-snmp net-snmp-devel mysql-server zabbix-server-mysql zabbix-web-mysql zabbix-agent zabbix-java-gateway
+sed -i 's/#ServerName www.example.com:80/ServerName zabbix-server:80/g'  /etc/httpd/conf/httpd.conf
+
+vi /etc/httpd/conf.d/zabbix.conf
+添加 php_value date.timezone Asia/Shanghai
+
+service httpd start
+
+配置数据库
+service mysqld start
+mysql_secure_installation 设置root密码
+mysql -u root -p123456
+
+
+mysql> create database zabbix character set utf8;
+mysql> grant all privileges on zabbix.* to 'zabbix'@'localhost' identified by '123456';
+mysql> flush privileges;
+
+mysql -u zabbix -p123456 zabbix < /usr/share/doc/zabbix-server-mysql-2.4.6/create/schema.sql
+mysql -u zabbix -p123456 zabbix < /usr/share/doc/zabbix-server-mysql-2.4.6/create/images.sql
+mysql -u zabbix -p123456 zabbix < /usr/share/doc/zabbix-server-mysql-2.4.6/create/data.sql
+
+vi /etc/zabbix/zabbix_server.conf 
+添加 
+echo DBPassword=123456 >>/etc/zabbix/zabbix_server.conf 
+echo JavaGateway=127.0.0.1 >>/etc/zabbix/zabbix_server.conf 
+echo StartJavaPollers=5 >>/etc/zabbix/zabbix_server.conf 
+
+service zabbix-server start
+service zabbix-java-gateway start
+
+chkconfig zabbix-server on
+chkconfig mysqld on
+chkconfig httpd on
+chkconfig zabbix-java-gateway on
+
+Agent端安装:
+
+sed -i 's/HOSTNAME=localhost.localdomain/HOSTNAME=zabbix-agent/' /etc/sysconfig/network
+
+rpm --import http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX
+rpm -Uv  http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm  
+
+yum install zabbix-agent -y
+chkconfig zabbix-agent on
+sed -i 's/Server=127.0.0.1/Server=192.168.0.124/'  /etc/zabbix/zabbix_agentd.conf
+sed -i 's/ServerActive=127.0.0.1/ServerActive=192.168.0.124/'  /etc/zabbix/zabbix_agentd.conf
+sed -i 's/Hostname=Zabbix server/Hostname=zabbix-agent/'  /etc/zabbix/zabbix_agentd.conf
+--zabbix添加主机的名字一定要跟这个名字一样
+
+
+chmod -R 777 /var/log/zabbix/
+chmod -R 777 /var/run/zabbix/
+ 
+service zabbix-agent start
+chkconfig zabbix-agent on
+
+监控模版下载
+http://www.zabbix.org/wiki/Zabbix_Templates
+
+
+

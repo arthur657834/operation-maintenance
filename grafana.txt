@@ -1,0 +1,36 @@
+http://docs.grafana.org/v2.0/installation/rpm/
+http://www.aikaiyuan.com/10263.html
+https://github.com/alexanderzobnin/grafana-zabbix/wiki/Usage
+http://www.tuicool.com/articles/b2miiuJ
+
+grafana-server图形化配置
+http://www.aikaiyuan.com/10255.html
+http://www.aikaiyuan.com/10263.html
+
+yum -y install https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.2-1.x86_64.rpm
+git clone  https://github.com/alexanderzobnin/grafana-zabbix/
+cp -r grafana-zabbix/zabbix/  /usr/share/grafana/public/app/plugins/datasource/
+vi /usr/share/grafana/public/app/plugins/datasource/zabbix/plugin.json 
+配置zabbix帐号密码（要有读权限）
+
+vi /usr/share/zabbix/api_jsonrpc.php
+在
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Max-Age: 1000');
+之前加以下两行
+require_once dirname(__FILE__).'/include/func.inc.php';
+require_once dirname(__FILE__).'/include/classes/core/CHttpRequest.php';
+
+service zabbix-server restart
+service grafana-server start
+
+http://192.168.1.10:3000/login
+默认账号密码 admin/admin
+
+group 就是 configuration中的host groups
+
+filter: 不要idel数据 CPU\s(?!idle)
+
+
