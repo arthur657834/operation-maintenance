@@ -17,6 +17,7 @@ chkconfig salt-master on
 echo interface: 192.168.1.10 >> /etc/salt/master
 echo auto_accept: Ture >> /etc/salt/master #自动接收证书
 service salt-master start
+salt-key -A -y
 
 salt-key -L
 查看证书列表
@@ -50,7 +51,7 @@ echo master: 192.168.1.10 >> /etc/salt/minion
 echo id: 11 >> /etc/salt/minion #标示客户端
 
 service salt-minion start
-salt-key -A -y
+
 
 配置计划任务：
 schedule:
@@ -62,10 +63,10 @@ schedule:
 nodegroups:
     TEST1: 'L@JF1-TEST1-001,JF-TEST1-0[0-9][0-9]'	
 
-salt -N TEST1 test.ping #
+salt -N TEST1 test.ping 
 
 配置grains：
-1.master上操作
+方法1.master上操作
 mkdir -p /srv/salt/_grains
 cd /srv/salt/_grains
 vi mem.py
@@ -99,7 +100,7 @@ salt '*' grains.item mem_test # 查看所有mem_test信息
 salt '11' grains.setval hello world #在master上给minion设置grain键值对,minion下会出现一个/etc/salt/grains 记录此值
 salt -G 'roles:webserver' test.ping #根据默认的grain的结果来执行命令
 
-2.client上操作
+方法2.client上操作
 vi /etc/salt/minion 增加以下内容
 grains:
   roles:
@@ -108,7 +109,60 @@ grains:
   deployment: datacenter4
   cabinet: 13
   cab_u: 14-15
- 
 
+配置pillar:
+服务端：
+mkdir /srv/pillar/
+vi /srv/pillar/top.sls
+base:
+  '11':
+    - sc
+	
+vi /srv/pillar/sc.sls 
+cang: 1
+shencan.net: 2
+DF: 1111
+12_1T:  cache_dir
 
+salt '11' pillar.data
 
+salt-api配置：
+yum -y install salt-master salt-api
+
+useradd -M -s /sbin/nologin salt
+echo "12345678" | passwd salt --stdin
+
+生成自签名证书(用于ssl)
+cd  /etc/pki/tls/certs
+# 生成自签名证书, 过程中需要输入key密码及RDNs
+make testcert
+cd /etc/pki/tls/private/
+# 解密key文件，生成无密码的key文件, 过程中需要输入key密码，该密码为之前生成证书时设置的密码
+openssl rsa -in localhost.key -out localhost_nopass.key
+
+vi /etc/salt/master
+rest_cherrypy:
+ host: 0.0.0.0
+ port: 8080
+ debug: true
+ disable_ssl: True
+# disable_ssl: True
+# static: /var/www/halite/halite
+# app: /var/www/halite/halite/index.html
+# ssl_crt: /etc/pki/tls/certs/localhost.crt
+# ssl_key: /etc/pki/tls/private/localhost_nopass.key
+
+external_auth:
+   pam:
+     salt:
+     - .*
+     - '@runner'
+     - '@wheel'
+
+测试:	 
+salt -a pam \*  test.ping
+
+curl -k https://192.168.38.10:8000/login -H "Accept: application/x-yaml" -d username='salt' -d password='12345678' -d eauth='pam'
+
+firefox 插件RESTClient
+{"eauth":"pam","password":"12345678","username":"saltstack"}
