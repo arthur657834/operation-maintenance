@@ -16,7 +16,10 @@ echo export JAVA_HOME=/usr/java/jdk1.8.0_60 >>/etc/profile;
 echo export PATH=\$JAVA_HOME/bin:\$PATH >>/etc/profile;
 echo export CLASSPATH=.:\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar:\$JAVA_HOME/jre/lib/rt.jar >>/etc/profile;
 source /etc/profile;
-yum -y install httpd php php-xml php-mbstring php-gd php-bcmath curl curl-devel net-snmp net-snmp-devel mysql-server zabbix-server-mysql zabbix-web-mysql zabbix-agent zabbix-java-gateway
+yum -y install httpd php php-xml php-mbstring php-gd php-bcmath curl curl-devel net-snmp net-snmp-devel mysql-server zabbix-server-mysql zabbix-web-mysql zabbix-agent zabbix-java-gateway php-pecl-ssh2.x86_64 libssh2-devel.x86_64
+
+如果是源码编译需要加入--with-ssh2 支持shell脚本
+
 sed -i 's/#ServerName www.example.com:80/ServerName zabbix-server:80/g'  /etc/httpd/conf/httpd.conf
 
 vi /etc/httpd/conf.d/zabbix.conf
