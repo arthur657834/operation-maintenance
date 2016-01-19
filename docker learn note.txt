@@ -1,0 +1,26 @@
+docker安装:
+	curl -sSL https://get.docker.com/ | sh 
+
+启动:
+	service docker start
+	
+docker run hello-world
+
+docker -v
+docker search tutorial
+docker pull learn/tutorial 
+docker run learn/tutorial echo "hello word"
+docker run learn/tutorial apt-get install -y ping
+docker ps -l
+
+docker 保存镜像:
+	docker commit 91 learn/ping 91为 docker 的镜像ID
+
+获取docker的详细信息:
+	docker inspect 91
+
+当前镜像信息:
+	docker images
+
+docker发布:
+	docker push learn/ping
