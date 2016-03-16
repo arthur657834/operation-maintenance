@@ -10,12 +10,13 @@ http://docs.saltstack.cn/zh_CN/latest/
 
 rpm -Uvh http://ftp.linux.ncsu.edu/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 
+yum install epel-release -y
 server:
 yum -y install salt-master
 chkconfig salt-master on
 
 echo interface: 192.168.1.10 >> /etc/salt/master
-echo auto_accept: Ture >> /etc/salt/master #自动接收证书
+echo auto_accept: True >> /etc/salt/master #自动接收证书
 service salt-master start
 salt-key -A -y
 
@@ -23,6 +24,12 @@ salt-key -L
 查看证书列表
 salt-key -A
 接受所有key
+salt-key -a id
+接受一个
+salt-key -d id
+#删除已经接收的机器中指定机器minion key (Accepted Keys:)
+salt-key -D 
+#删除已经接收的所有机器(Accepted Keys:) 
 
 测试+内建命令：
 https://docs.saltstack.com/en/latest/ref/modules/all/index.html
@@ -40,6 +47,8 @@ salt -E '1+' test.ping
 -L 指定主机
 salt -L '11,12' test.ping
 
+salt -G 'os:CentOS' test.ping
+  
 执行命令
 salt '*' cmd.run "hostname" 
 
@@ -51,7 +60,6 @@ echo master: 192.168.1.10 >> /etc/salt/minion
 echo id: 11 >> /etc/salt/minion #标示客户端
 
 service salt-minion start
-
 
 配置计划任务：
 schedule:
@@ -94,9 +102,10 @@ salt '*' saltutil.sync_grains #此命令会将_grains目录下的文件同步到
 salt '*' sys.reload_modules  #如果需要更改模块，更改完成后，可以使用命令重载
 salt '*' saltutil.sync_grains #saltstack对值做了cache,刷新grains的值
 
-salt '*' grains.items # 查看所有grains信息
 salt '*' grains.ls #列出grains的所有key
+salt '*' grains.items # 查看所有grains信息
 salt '*' grains.item mem_test # 查看所有mem_test信息
+salt '*' grains.item os osrelease oscodename
 salt '11' grains.setval hello world #在master上给minion设置grain键值对,minion下会出现一个/etc/salt/grains 记录此值
 salt -G 'roles:webserver' test.ping #根据默认的grain的结果来执行命令
 
@@ -166,3 +175,30 @@ curl -k https://192.168.38.10:8000/login -H "Accept: application/x-yaml" -d user
 
 firefox 插件RESTClient
 {"eauth":"pam","password":"12345678","username":"saltstack"}
+
+配置salt-syndic:
+yum -y install salt-syndic
+master->salt-syndic->minion
+
+master:
+order_master: True
+
+salt-syndic:
+/etc/init.d/salt-master start
+/etc/init.d/salt-syndic start
+syndic_master:master IP
+
+minion:
+master:syndic_master IP
+
+配置mine：
+vi /etc/salt/minion
+mine_functions:
+  test.ping: []
+  network.dig:
+    - www.naver.com
+  network.usage: []
+  mine_interval: 1
+salt '*' mine.get '*' network.dig
+salt '*' mine.send network.dig www.qq.com
+ 
