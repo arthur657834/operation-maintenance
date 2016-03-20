@@ -1,0 +1,17 @@
+gitfs配置:
+pip install gitpython pygit2 GitPython
+yum install python-pygit2 python-dulwich libgit2 libgit2-devel libffi libffi-devel -y
+
+fileserver_backend:
+ - git
+gitfs_remotes:
+ - git://github.com/saltstack/saltstack.git
+ - git://github.com/example/test1.git      ##可以多个git
+ - file:///root/td                         ##可以使用本地git
+ 
+ssh -T 123456@github.com
+
+salt-run fileserver.file_list
+salt-run fileserver.update
+salt-run fileserver.clear_cache
+rm -rf /var/cache/salt/master{,/file_lists}/gitfs

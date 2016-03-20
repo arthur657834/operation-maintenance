@@ -1,0 +1,13 @@
+sc create test3 binPath= "C:\Users\Administrator\Desktop\win32srvDemo\win32srvdemo\Debug\win32srvDemo.exe"  
+
+sc config test3 start= AUTO  
+net start test3  
+net stop test3 
+sc delete test3 
+
+sc config 服务名 start=AUTO    (自动)
+
+sc config 服务名 start= DEMAND  (手动)
+
+sc config 服务名 start= DISABLED(禁用)
+

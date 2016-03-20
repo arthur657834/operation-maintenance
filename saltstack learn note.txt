@@ -1,12 +1,16 @@
+http://outofmemory.cn/saltstack/salt
+http://setjs.com/?p=226 #命令大全
+http://www.ttlsa.com/saltstack/
+http://docs.saltstack.cn/zh_CN/latest/
+模块文档:
+https://docs.saltstack.com/en/latest/ref/modules/all/index.html?highlight=full%20list%20builtin
+
 1.Master与Minion认证
 (1)、minion在第一次启动时，会在/etc/salt/pki/minion/（该路径在/etc/salt/minion里面设置）下自动生成minion.pem（private key）和 minion.pub（public key），然后将 minion.pub发送给master。
 (2)、master在接收到minion的public key后，通过salt-key命令accept minion public key，这样在master的/etc/salt/pki/master/minions下的将会存放以minion id命名的 public key，然后master就能对minion发送指令了。
  
 2.Master与Minion的连接
 (1)、SaltStack master启动后默认监听4505和4506两个端口。4505（publish_port）为saltstack的消息发布系统，4506（ret_port）为saltstack客户端与服务端通信的端口。如果使用lsof 查看4505端口，会发现所有的minion在4505端口持续保持在ESTABLISHED状态。
-
-http://www.ttlsa.com/saltstack/
-http://docs.saltstack.cn/zh_CN/latest/
 
 rpm -Uvh http://ftp.linux.ncsu.edu/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 
@@ -20,6 +24,15 @@ echo auto_accept: True >> /etc/salt/master #自动接收证书
 service salt-master start
 salt-key -A -y
 
+配置文件目录:
+file_roots:
+  base:
+    - /srv/salt
+
+pillar_roots:
+  base:
+    - /srv/pillar
+	
 salt-key -L
 查看证书列表
 salt-key -A
@@ -202,3 +215,104 @@ mine_functions:
 salt '*' mine.get '*' network.dig
 salt '*' mine.send network.dig www.qq.com
  
+配置salt-ssh：
+yum -y install salt-ssh
+vi /etc/salt/roster
+test1:
+  host: 10.1.50.28
+  user: root
+  passwd: 123456
+  port: 22
+  timeout: 5
+  #sudo: True
+
+salt-ssh '*' test.ping
+salt-ssh '*' -r 'ls /'   ##执行shell命令
+salt-ssh '*' cmd.run 'ls /' ##用模块来执行也是可以的
+salt-ssh '*' state.sls   ##执行状态
+
+配置state：
+cd /srv/salt
+vi apache.sls
+
+apache:
+  pkg:
+    - name: httpd
+    - installed 
+  service:
+    - name: httpd 
+    - running
+    - reload: True
+    - watch:
+      - file: /etc/httpd/conf/httpd.conf
+    - require:
+      - pkg: httpd
+
+/etc/httpd/conf/httpd.conf:
+  file.managed:
+    - source: salt://httpd.conf
+    - user: root
+    - group: root
+    - mode: 644
+    - backup: minion
+
+#require,watch是指依赖，require_in,watch_in是指被依赖
+#order:指定执行次序,1 最先 -1 最后
+	
+salt '*' state.sls apache
+#如果在目录下，将目录与文件用’.’隔开，如： httpd/apache.sls –> httpd.apache
+
+minino上执行: 	  
+salt-call state.highstate
+salt-call test.ping           ##自己执行test.ping命令
+salt-call cmd.run 'ifconfig'  ##自己执行cmd.run函数
+
+salt '*' cmd.exec_code python 'import sys; print sys.version'
+
+salt '*' pkg.install ftp 
+
+salt-run manage.status   ##查看所有minion状态
+salt-run manage.down     ##查看所有没在线minion
+salt-run manage.down removekeys=True
+salt-run manged.up   ##查看所有在线minion
+
+salt '*' saltutil.refresh_pillar  #更新piilar文件
+
+salt '*' state.show_highstate
+salt '*' state.show_lowstate
+
+salt '*' sys.doc test.ping
+
+#cp 模块
+salt '*' cp.get_dir salt://123 /root
+salt '*' cp.get_file salt://1.txt /root/lj.txt
+salt '*' cp.get_url https://www.baidu.com/img/bd_logo1.png /root/1.png
+
+#cron模块
+salt '*' cron.set_job root '*/5' '*' '*' '*' '*' 'date >/dev/null 2>&1'
+salt '*' cron.rm_job root 'date >/dev/null 2>&1'
+salt '*' cron.raw_cron root
+
+#dnsutil模块
+salt '*' dnsutil.hosts_append /etc/hosts 127.0.0.1 rocketzhang.qq.com
+
+#file模块
+salt '*' file.get_sum /etc/resolv.conf md5
+salt '*' file.stats /etc/resolv.conf
+
+#pkg包管理模块
+salt '*' pkg.install nmap
+salt '*' pkg.file_list nmap
+
+#service 服务模块
+salt '*' service.enable crond
+salt '*' service.disable crond
+salt '*' service.status crond
+salt '*' service.stop crond
+salt '*' service.start crond
+salt '*' service.restart crond
+salt '*' service.reload crond
+
+salt '*' cloud.query
+salt '*' bridge.list
+salt '*' schedule.list

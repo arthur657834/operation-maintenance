@@ -1,0 +1,31 @@
+sls扩展写法:
+对ssh/server.sls的扩展
+include:
+  - ssh.server
+extend:
+  /etc/ssh/banner:
+    file:
+      - source: salt://ssh/custom-banner
+
+sls py写法：
+ex1:
+apache:
+  pkg:installed:
+    {% if grains['os'] == 'RedHat' %}
+      - name: httpd
+    {% endif %}
+  service.running:
+    {% if grains['os'] == 'Redhat' %}
+      - name: httpd
+    {% endif %}
+  - watch:
+  - pkg: apache
+ 
+ex2:
+{% set users = ['jerry','tom','gaga'] %}
+{% for user in users %}
+{{ user }}:
+ user.present:
+   - shell: /bin/bash
+   - home: /home/{{ user }}
+{% endfor %}

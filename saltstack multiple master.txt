@@ -1,0 +1,19 @@
+多master:
+rm -fr /etc/salt/pki/master/*
+scp root@10.1.240.124:/etc/salt/pki/master/master* /etc/salt/pki/master/ ##拷贝第一台master下的文件
+service salt-master start
+
+minino:
+master: 
+  - 10.1.240.124
+  - 10.1.240.125
+ 
+tips:
+1.2个master并不会共享Minion keys，一个master删除了一个key不会影响另一个
+2.不会自动同步File_roots,所以需要手动去维护，如果用git就没问题了
+3.不会自动同步Pillar_Roots，所以需要手工去维护，也可以用git
+4.Master的配置文件也是独立的
+
+salt '*' pillar.items
+salt '*' pillar.item <key>      #只能看到顶级的
+salt '*' pillar.get <key>:<key> #可以取到更小粒度的

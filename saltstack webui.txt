@@ -1,0 +1,27 @@
+#很多错误没有安装成功
+
+pip install cherrypy
+git clone https://github.com/saltstack/halite
+cd halite/halite
+./genindex.py -C
+
+vi /etc/salt/master
+rest_cherrypy:
+ host: 0.0.0.0
+ port: 8080
+ debug: true
+ disable_ssl: True
+ static: /var/www/halite/halite/lattice #tips:watch here
+ app: /var/www/halite/halite/index.html
+ 
+external_auth:
+   pam:
+     salt:
+     - .*
+     - '@runner'
+     - '@wheel'
+
+/etc/init.d/salt-master start
+salt-api -d
+http://ip:8080/app
+

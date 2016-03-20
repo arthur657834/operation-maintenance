@@ -1,0 +1,92 @@
+yum -y install libselinux-python
+pip install pycrypto pyyaml Jinja jinja2 paramiko simplejson ansible
+
+ansible-doc -l
+ansible-doc -s "yum"
+
+方式1:
+echo '' | ssh-keygen -t rsa -P ''
+cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
+将master和slave的authorized_keys合成一份
+
+mkdir /etc/ansible
+cd /etc/ansible
+
+vi hosts
+[ljtest]
+10.1.50.28
+
+方式2:
+yum install epel-release -y
+yum -y install sshpass
+
+[ljtest]
+10.1.50.28 ansible_ssh_user=root ansible_ssh_pass=123456
+#ansible_port=5000 ansible_user=alice
+
+
+ansible ljtest -m command -a 'uptime'
+ansible ljtest -m shell -a "ls"
+ansible ljtest -m raw -a 'uptime' 
+
+ansible all -S -R root -m shell -a "uptime"
+#-S, --su              run operations with su (deprecated, use become)
+#-R SU_USER, --su-user=SU_USER run operations with su as this user (default=root) (deprecated, use become)
+
+ansible ljtest -m setup
+ansible ljtest -m setup -a "filter=ansible_*_mb"
+ansible ljtest -m setup -a "filter=ansible_eth[02]"
+ansible '12:14:146' -m ping -l '14*'
+#-l,--limit参数，对上面匹配出的结果会再进行一次过滤
+
+ansible ljtest -m ping
+#ansible all -m ping
+ansible "test1:&test2" -m ping 
+#匹配同时在test1和test2组中的主机
+ansible '1?' -m ping
+#匹配"1"开头再接一个任意字符的主机或组
+ansible '~test.*' -m ping
+
+ansible ljtest -m hostname -a "name=python"
+ansible ljtest -m cron -a "name=check minute=5 job='crontab -l >>/root/123'"
+ansible ljtest -m cron -a "name=check state=absent"
+
+ansible ljtest -m file -a "src=/etc/resolv.conf dest=/tmp/resolv.conf state=link"
+ansible ljtest -m command -a "ls -al /tmp/resolv.conf"
+ansible ljtest -m file -a "path=/tmp/resolv.conf state=absent"
+
+ansible ljtest -m copy -a "src=/etc/ansible/ansible.cfg dest=/tmp/ansible.cfg owner=root group=root mode=0644"
+ansible ljtest -m command -a "ls -al /tmp/ansible.cfg"
+ansible ljtest -m file -a "path=/tmp/ansible.cfg state=absent"
+
+ansible ljtest -m yum -a "name=vsftpd state=present"
+ansible ljtest -m service -a "name=vsftpd state=started enable=yes"
+
+ansible ljtest -m user -a 'name=ljtest comment="ansible add user" uid=100 password="faJxjj/6hKXPs"'
+#create password
+python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_crypt.encrypt(getpass.getpass())"
+python -c 'from passlib.hash import sha512_crypt; print sha512_crypt.encrypt("123456")'
+python -c 'import crypt;print crypt.crypt("123456", "fanghanyun")'
+echo "123456" | openssl passwd -salt -1 `openssl rand -hex 4` -stdin
+openssl passwd -salt -1 "123456"
+
+
+ansible-playbook useradd.yml
+# vi useradd.yml
+---
+- hosts: 172.31.2.17
+  user: root
+  sudo: no
+  vars:
+  #password: python -c 'import crypt; print crypt.crypt("devops1232", "fanghanyun")'
+    user: fanghanyun
+  tasks:
+   - name: add user
+     action: user name={{ user }} password=faJxjj/6hKXPs update_password=always shell=/bin/bash home=/home/{{ user }}
+  tags:
+   - user
+
+ansible ljtest -m user -a "name=ljtest state=absent remove=yes" # 用户信息没有完全删除干净
+   
+#没有试过
+#tags用于让用户选择运行或路过playbook中的部分代码。ansible具有幂等性因此会自动跳过没有变化的部分即便如此有些代码为测试其确实没有发生变化的时间依然会非常地长。此时如果确信其没有变化就可以通过tags跳过此些代码片断。 
