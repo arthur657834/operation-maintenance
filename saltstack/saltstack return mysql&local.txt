@@ -1,0 +1,39 @@
+master,minino 安装
+yum -y install mysql-devel mysql-libs mysql
+wget http://sourceforge.net/projects/mysql-python/files/mysql-python/1.2.3/MySQL-python-1.2.3.tar.gz
+tar zxvf MySQL-python-1.2.3.tar.gz
+cd MySQL-python-1.2.3
+python setup.py build
+python setup.py install
+
+easy_install dmidecode
+easy_install jsonpickle
+
+master:
+yum -y install mysql-server
+/etc/init.d/mysqld start
+mysql_secure_installation 
+mysql -uroot -p123
+sql在mysql.py的注释里
+https://github.com/saltstack/salt/blob/develop/salt/returners/mysql.py
+mkdir /srv/salt/_returners
+vi mysql.py
+#注意修改数据库配置
+			
+/etc/init.d/salt-minion restart
+salt '*' saltutil.sync_returners
+salt '*' saltutil.sync_all
+salt '*' cmd.run 'uptime' --return mysql
+
+select * from salt_returns;
+
+local_return：
+vi local_return.py
+#coding:utf-8
+def __virtual__():
+   '''调用时的名字'''
+   return "local_return"
+def returner(ret):
+    f=open('/var/log/salt/local_returner.log','a+')
+    f.write(str(ret)[1:-1]+'\n')
+    f.close()
