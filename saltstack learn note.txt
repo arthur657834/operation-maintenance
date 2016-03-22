@@ -189,6 +189,17 @@ curl -k https://192.168.38.10:8000/login -H "Accept: application/x-yaml" -d user
 firefox 插件RESTClient
 {"eauth":"pam","password":"12345678","username":"saltstack"}
 
+查看minions:
+curl -k https://10.1.10.132:8000/minions -H "Accept:    application/x-yaml" -H "X-Auth-Token: 6e04822ba494b2333e0b12c7517d28f047c84e7e"
+
+测试ping:
+curl -k https://10.1.10.132:8000/ -H "Accept:    application/x-yaml" -H "X-Auth-Token: 6e04822ba494b2333e0b12c7517d28f047c84e7e" -d client='local' -d tgt='*' -d fun='test.ping'
+
+测试job:
+curl -k https://10.1.10.132:8000/jobs -H "Accept:    application/x-yaml" -H "X-Auth-Token: 6e04822ba494b2333e0b12c7517d28f047c84e7e"
+
+
+
 配置salt-syndic:
 yum -y install salt-syndic
 master->salt-syndic->minion
