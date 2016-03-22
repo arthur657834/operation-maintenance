@@ -64,6 +64,7 @@ salt -G 'os:CentOS' test.ping
   
 执行命令
 salt '*' cmd.run "hostname" 
+salt '*' cmd.script salt://shell/test.sh
 
 client：
 yum -y install salt-minion
@@ -293,6 +294,7 @@ salt '*' state.show_highstate
 salt '*' state.show_lowstate
 
 salt '*' sys.doc test.ping
+salt '*' sys.doc | grep -i mem
 
 #cp 模块
 salt '*' cp.get_dir salt://123 /root
