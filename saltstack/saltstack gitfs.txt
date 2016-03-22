@@ -15,3 +15,15 @@ salt-run fileserver.file_list
 salt-run fileserver.update
 salt-run fileserver.clear_cache
 rm -rf /var/cache/salt/master{,/file_lists}/gitfs
+
+vi /etc/salt/master
+pillar_opts: True
+
+salt '*' pillar.get master:enviroment
+salt-run fileserver.file_list
+
+include:
+  - {{ pillar['master']['enviroment'] }}
+
+salt '*' state.sls cpis1 saltenv=stage
+  
