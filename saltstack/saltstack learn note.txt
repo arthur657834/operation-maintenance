@@ -25,6 +25,8 @@ echo auto_accept: True >> /etc/salt/master #自动接收证书
 service salt-master start
 salt-key -A -y
 
+mkdir /srv/salt /srv/pillar
+
 配置文件目录:
 file_roots:
   base:
