@@ -8,8 +8,11 @@ gitfs_remotes:
  - git://github.com/saltstack/saltstack.git
  - git://github.com/example/test1.git      ##可以多个git
  - file:///root/td                         ##可以使用本地git
- 
-ssh -T 123456@github.com
+gitfs_root: states
+pillar_opts: True  ##配置多环境时用
+environment: stage  ##配置多环境时用
+
+ssh -T 123456@github.com ##github可能需要先登录
 
 salt-run fileserver.file_list
 salt-run fileserver.update
@@ -26,4 +29,8 @@ include:
   - {{ pillar['master']['enviroment'] }}
 
 salt '*' state.sls cpis1 saltenv=stage
+
+cpis1文件存放路径:
+/var/cache/salt/master/gitfs/refs/stage/
+
   
