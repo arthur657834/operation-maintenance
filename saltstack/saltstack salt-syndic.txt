@@ -1,0 +1,14 @@
+配置salt-syndic:
+yum -y install salt-syndic
+master->salt-syndic->minion
+
+master:
+order_master: True
+
+salt-syndic:
+/etc/init.d/salt-master start
+/etc/init.d/salt-syndic start
+syndic_master:master IP
+
+minion:
+master:syndic_master IP

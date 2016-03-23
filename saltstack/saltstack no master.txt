@@ -1,0 +1,16 @@
+关闭minino
+
+vi /etc/salt/minion
+
+file_client: local
+
+file_roots:
+  base:
+    - /srv/salt
+
+pillar_roots:
+  base:
+    - /srv/pillar
+	
+salt-call --local state.sls mysql
+	

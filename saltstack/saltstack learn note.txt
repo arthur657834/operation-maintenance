@@ -202,23 +202,6 @@ curl -k https://10.1.10.132:8000/ -H "Accept:    application/x-yaml" -H "X-Auth-
 测试job:
 curl -k https://10.1.10.132:8000/jobs -H "Accept:    application/x-yaml" -H "X-Auth-Token: 6e04822ba494b2333e0b12c7517d28f047c84e7e"
 
-
-
-配置salt-syndic:
-yum -y install salt-syndic
-master->salt-syndic->minion
-
-master:
-order_master: True
-
-salt-syndic:
-/etc/init.d/salt-master start
-/etc/init.d/salt-syndic start
-syndic_master:master IP
-
-minion:
-master:syndic_master IP
-
 配置mine：
 vi /etc/salt/minion
 mine_functions:
@@ -229,22 +212,6 @@ mine_functions:
   mine_interval: 1
 salt '*' mine.get '*' network.dig
 salt '*' mine.send network.dig www.qq.com
- 
-配置salt-ssh：
-yum -y install salt-ssh
-vi /etc/salt/roster
-test1:
-  host: 10.1.50.28
-  user: root
-  passwd: 123456
-  port: 22
-  timeout: 5
-  #sudo: True
-
-salt-ssh '*' test.ping
-salt-ssh '*' -r 'ls /'   ##执行shell命令
-salt-ssh '*' cmd.run 'ls /' ##用模块来执行也是可以的
-salt-ssh '*' state.sls   ##执行状态
 
 配置state：
 cd /srv/salt

@@ -1,0 +1,15 @@
+配置salt-ssh：
+yum -y install salt-ssh
+vi /etc/salt/roster
+test1:
+  host: 10.1.50.28
+  user: root
+  passwd: 123456
+  port: 22
+  timeout: 5
+  #sudo: True
+
+salt-ssh '*' test.ping
+salt-ssh '*' -r 'ls /'   ##执行shell命令
+salt-ssh '*' cmd.run 'ls /' ##用模块来执行也是可以的
+salt-ssh '*' state.sls   ##执行状态
