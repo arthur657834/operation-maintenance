@@ -14,7 +14,7 @@ https://docs.saltstack.com/en/latest/ref/modules/all/index.html?highlight=full%2
 
 rpm -Uvh http://ftp.linux.ncsu.edu/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 
-yum install epel-release -y
+yum install epel-release dmidecode -y
 yum -y install python-libcloud #云编排用
 server:
 yum -y install salt-master
