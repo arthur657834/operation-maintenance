@@ -17,13 +17,13 @@ vi /srv/reactor/auto.sls
 run_state:
   local.state.sls:
     - tgt: {{ data['id'] }}
-      - arg:
-	  - shencan
+    - arg:
+      - shencan
 run_init:
   local.cmd.run:
     - tgt: {{ data['id'] }}
-	- arg:
-	  - echo initsok >> /tmp/cpis
+    - arg:
+      - echo initsok >> /tmp/cpis
 
 vi /srv/salt/shencan.sls	  
 /tmp/example:
