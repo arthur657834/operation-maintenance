@@ -11,7 +11,7 @@ vi /srv/reactor/Minion.sls
   key_accept:
     wheel.key.accept:
 	  - match: {{ data['id']}}
-{% if %}
+{% endif %}
 
 vi /srv/reactor/auto.sls
 run_state:
