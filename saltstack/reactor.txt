@@ -17,7 +17,7 @@ vi /srv/reactor/auto.sls
 run_state:
   local.state.sls:
     - tgt: {{ data['id'] }}
-	- arg:
+      - arg:
 	  - shencan
 run_init:
   local.cmd.run:
