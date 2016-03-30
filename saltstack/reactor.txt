@@ -3,7 +3,7 @@
 reactor:
   - 'salt/auth':
     - /srv/reactor/Minion.sls
-  - 'salt/minino/Minino/start':
+  - 'salt/minion/Minino/start':
     - /srv/reactor/auto.sls
 	
 vi /srv/reactor/Minion.sls
