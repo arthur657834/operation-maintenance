@@ -7,7 +7,7 @@ reactor:
     - /srv/reactor/auto.sls
 	
 vi /srv/reactor/Minion.sls
-{% if 'act' in data and data['act'] == 'pend' and data['id']}.startswith('Min') %}
+{% if 'act' in data and data['act'] == 'pend' and data['id'].startswith('Min') %}
   key_accept:
     wheel.key.accept:
 	  - match: {{ data['id']}}
@@ -25,7 +25,7 @@ run_init:
 	- arg:
 	  - echo initsok >> /tmp/cpis
 
-vi /srv/reactor/shencan.sls	  
+vi /srv/salt/shencan.sls	  
 /tmp/example:
  file.managed:
    - source: salt://example
