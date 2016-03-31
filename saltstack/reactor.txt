@@ -32,4 +32,4 @@ vi /srv/salt/shencan.sls
 
 startswith('Min') => ID min 开头的匹配后自动配置
 
-
+salt-run state.event pretty=True  查看event
