@@ -1,3 +1,4 @@
+vi /etc/salt/master
 peer:
   Minion:  #minion id
     - test.ping
@@ -6,6 +7,9 @@ peer_run:
   Minion:  #minion id
     - manage.up
 	
+peer:控制minion执行模块
+peer_run:控制minino执行runner
+
 /etc/init.d/salt-master restart
 
 salt-call publish.publish 'Min-110' test.ping
