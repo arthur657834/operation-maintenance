@@ -30,5 +30,6 @@ vi /srv/salt/shencan.sls
  file.managed:
    - source: salt://example
 
+startswith('Min') => ID min 开头的匹配后自动配置
 
 
