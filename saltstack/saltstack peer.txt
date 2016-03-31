@@ -1,0 +1,14 @@
+peer:
+  Minion:  #minion id
+    - test.ping
+
+peer_run:
+  Minion:  #minion id
+    - manage.up
+	
+/etc/init.d/salt-master restart
+
+salt-call publish.publish 'Min-110' test.ping
+ 
+salt-run state.event pretty=true
+

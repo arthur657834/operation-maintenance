@@ -1,0 +1,45 @@
+vi /srv/salt/test.sls	
+#!py
+def run():
+	example={}
+	example['/tmp/test']={
+		'file.managed': [
+			{'source': 'salt://test'},
+			{'mode': '644'},
+			{'user': 'root'},
+			{'template': 'jinja'},
+			{'group': 'root'},
+			{'content': {
+				'a': __grains__['os'],
+				'b': __pillar__['a'],
+				},
+			},
+		]
+	}
+	return example
+
+
+vi /srv/salt/one.sls	  
+/tmp/foo.conf:
+ file.managed:
+   - source: salt://foo.conf
+   - user: root
+   - group: root
+   - mode: 644
+   - backup: minion
+ 
+ vi /srv/pillar/top.sls
+ base:
+	'*':
+		- test
+
+vi /srv/pillar/test.sls
+a: b
+		
+vi /srv/salt/test
+Centos
+b
+
+salt \* state.sls test
+ 
+ 
