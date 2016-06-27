@@ -1,132 +1,96 @@
-http://www.zabbix.org/wiki/InstallOnCentOS_RHEL
-
-groupadd zabbix
-useradd -g zabbix zabbix
-echo 123456 | passwd --stdin zabbix
-
-service端安装:
-
-sed -i 's/HOSTNAME=localhost.localdomain/HOSTNAME=zabbix-server/' /etc/sysconfig/network
-
-rpm --import http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX
-rpm -Uv  http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm  //注意安装的linux版本
-
-rpm -ivh jdk-8u60-linux-x64.rpm;
-echo export JAVA_HOME=/usr/java/jdk1.8.0_60 >>/etc/profile;
-echo export PATH=\$JAVA_HOME/bin:\$PATH >>/etc/profile;
-echo export CLASSPATH=.:\$JAVA_HOME/lib/dt.jar:\$JAVA_HOME/lib/tools.jar:\$JAVA_HOME/jre/lib/rt.jar >>/etc/profile;
-source /etc/profile;
-yum -y install httpd php php-xml php-mbstring php-gd php-bcmath curl curl-devel net-snmp net-snmp-devel mysql-server zabbix-server-mysql zabbix-web-mysql zabbix-agent zabbix-java-gateway php-pecl-ssh2.x86_64 libssh2-devel.x86_64
-
-如果是源码编译需要加入--with-ssh2 支持shell脚本
-
-sed -i 's/#ServerName www.example.com:80/ServerName zabbix-server:80/g'  /etc/httpd/conf/httpd.conf
-
-vi /etc/httpd/conf.d/zabbix.conf
-添加 php_value date.timezone Asia/Shanghai
-
-service httpd start
-
-配置数据库
-service mysqld start
-mysql_secure_installation 设置root密码
-mysql -u root -p123456
-
-mysql> create database zabbix character set utf8;
-mysql> grant all privileges on zabbix.* to 'zabbix'@'localhost' identified by '123456';
-mysql> flush privileges;
-
-mysql -u zabbix -p123456 zabbix < /usr/share/doc/zabbix-server-mysql-2.4.7/create/schema.sql
-mysql -u zabbix -p123456 zabbix < /usr/share/doc/zabbix-server-mysql-2.4.7/create/images.sql
-mysql -u zabbix -p123456 zabbix < /usr/share/doc/zabbix-server-mysql-2.4.7/create/data.sql
-
-vi /etc/zabbix/zabbix_server.conf 
-添加 
-echo DBPassword=123456 >>/etc/zabbix/zabbix_server.conf 
-echo JavaGateway=127.0.0.1 >>/etc/zabbix/zabbix_server.conf 
-echo StartJavaPollers=5 >>/etc/zabbix/zabbix_server.conf 
-
-service zabbix-server start
-service zabbix-java-gateway start
-
-chkconfig zabbix-server on
-chkconfig mysqld on
-chkconfig httpd on
-chkconfig zabbix-java-gateway on
-
-Agent端安装:
-
-sed -i 's/HOSTNAME=localhost.localdomain/HOSTNAME=zabbix-agent/' /etc/sysconfig/network
-
-rpm --import http://repo.zabbix.com/RPM-GPG-KEY-ZABBIX
-rpm -Uv  http://repo.zabbix.com/zabbix/2.4/rhel/6/x86_64/zabbix-release-2.4-1.el6.noarch.rpm  
-
-yum install zabbix-agent -y
-chkconfig zabbix-agent on
-sed -i 's/Server=127.0.0.1/Server=192.168.1.10/'  /etc/zabbix/zabbix_agentd.conf
-sed -i 's/ServerActive=127.0.0.1/ServerActive=192.168.1.10/'  /etc/zabbix/zabbix_agentd.conf
-sed -i 's/Hostname=Zabbix server/Hostname=zabbix-agent/'  /etc/zabbix/zabbix_agentd.conf
---zabbix添加主机的名字一定要跟这个名字一样
-
-
-chmod -R 777 /var/log/zabbix/
-chmod -R 777 /var/run/zabbix/
- 
-service zabbix-agent start
-chkconfig zabbix-agent on
-
-监控模版下载
-http://www.zabbix.org/wiki/Zabbix_Templates
-
-
-Proxy端安装:
-yum install zabbix-agent zabbix-proxy zabbix-server-mysql mysql-server -y
-配置数据库
-service mysqld start
-mysql_secure_installation 设置root密码
-mysql -u root -p123456
-
-mysql> create database zabbix character set utf8;
-mysql> grant all privileges on zabbix.* to 'zabbix'@'localhost' identified by '123456';
-mysql> flush privileges;
-
-mysql -u zabbix -p123456 zabbix < /usr/share/doc/zabbix-server-mysql-2.4.7/create/schema.sql //其他两份sql导入会出问题
-
-sed -i 's/Server=127.0.0.1/Server=192.168.1.10/'  /etc/zabbix/zabbix_agentd.conf
-sed -i 's/ServerActive=127.0.0.1/ServerActive=192.168.1.10/'  /etc/zabbix/zabbix_agentd.conf
-
-sed -i 's/Server=127.0.0.1/Server=192.168.1.10/'  /etc/zabbix/zabbix_proxy.conf
-sed -i 's/DBName=zabbix_proxy/DBName=zabbix/' /etc/zabbix/zabbix_proxy.conf
-sed -i 's/Hostname=Zabbix proxy/Hostname=Zabbix-proxy/' /etc/zabbix/zabbix_proxy.conf
-
-echo DBPassword=123456 >> /etc/zabbix/zabbix_proxy.conf
-
-sed -i 's/HOSTNAME=.*/HOSTNAME=Zabbix-proxy/' /etc/sysconfig/network //可以不用修改
-
-/etc/init.d/zabbix-proxy start
-
-agent端修改配置文件
-Server=192.168.1.11
-ServerActive=192.168.1.11
-service zabbix-agent restart
-web端修改：
-administration->prixies
-Proxy name 一定要跟 /etc/zabbix/zabbix_proxy.conf中的Hostname一致
-Hosts 选择要被监控的机器
-
-Configuration->Hosts Monitored by proxy 选择 Proxy name
-
-自动注册：
-vi /etc/zabbix/zabbix_agentd.conf
-HostMetadataItem=system.uname
-这样才会注册成功
-
-
-
-
-
-
-
-
-
-
+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

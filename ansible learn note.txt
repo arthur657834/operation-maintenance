@@ -1,92 +1,72 @@
-yum -y install libselinux-python
-pip install pycrypto pyyaml Jinja jinja2 paramiko simplejson ansible
-
-ansible-doc -l
-ansible-doc -s "yum"
-
-方式1:
-echo '' | ssh-keygen -t rsa -P ''
-cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
-将master和slave的authorized_keys合成一份
-
-mkdir /etc/ansible
-cd /etc/ansible
-
-vi hosts
-[ljtest]
-10.1.50.28
-
-方式2:
-yum install epel-release -y
-yum -y install sshpass
-
-[ljtest]
-10.1.50.28 ansible_ssh_user=root ansible_ssh_pass=123456
-#ansible_port=5000 ansible_user=alice
-
-
-ansible ljtest -m command -a 'uptime'
-ansible ljtest -m shell -a "ls"
-ansible ljtest -m raw -a 'uptime' 
-
-ansible all -S -R root -m shell -a "uptime"
-#-S, --su              run operations with su (deprecated, use become)
-#-R SU_USER, --su-user=SU_USER run operations with su as this user (default=root) (deprecated, use become)
-
-ansible ljtest -m setup
-ansible ljtest -m setup -a "filter=ansible_*_mb"
-ansible ljtest -m setup -a "filter=ansible_eth[02]"
-ansible '12:14:146' -m ping -l '14*'
-#-l,--limit参数，对上面匹配出的结果会再进行一次过滤
-
-ansible ljtest -m ping
-#ansible all -m ping
-ansible "test1:&test2" -m ping 
-#匹配同时在test1和test2组中的主机
-ansible '1?' -m ping
-#匹配"1"开头再接一个任意字符的主机或组
-ansible '~test.*' -m ping
-
-ansible ljtest -m hostname -a "name=python"
-ansible ljtest -m cron -a "name=check minute=5 job='crontab -l >>/root/123'"
-ansible ljtest -m cron -a "name=check state=absent"
-
-ansible ljtest -m file -a "src=/etc/resolv.conf dest=/tmp/resolv.conf state=link"
-ansible ljtest -m command -a "ls -al /tmp/resolv.conf"
-ansible ljtest -m file -a "path=/tmp/resolv.conf state=absent"
-
-ansible ljtest -m copy -a "src=/etc/ansible/ansible.cfg dest=/tmp/ansible.cfg owner=root group=root mode=0644"
-ansible ljtest -m command -a "ls -al /tmp/ansible.cfg"
-ansible ljtest -m file -a "path=/tmp/ansible.cfg state=absent"
-
-ansible ljtest -m yum -a "name=vsftpd state=present"
-ansible ljtest -m service -a "name=vsftpd state=started enable=yes"
-
-ansible ljtest -m user -a 'name=ljtest comment="ansible add user" uid=100 password="faJxjj/6hKXPs"'
-#create password
-python -c "from passlib.hash import sha512_crypt; import getpass; print sha512_crypt.encrypt(getpass.getpass())"
-python -c 'from passlib.hash import sha512_crypt; print sha512_crypt.encrypt("123456")'
-python -c 'import crypt;print crypt.crypt("123456", "fanghanyun")'
-echo "123456" | openssl passwd -salt -1 `openssl rand -hex 4` -stdin
-openssl passwd -salt -1 "123456"
-
-
-ansible-playbook useradd.yml
-# vi useradd.yml
----
-- hosts: 172.31.2.17
-  user: root
-  sudo: no
-  vars:
-  #password: python -c 'import crypt; print crypt.crypt("devops1232", "fanghanyun")'
-    user: fanghanyun
-  tasks:
-   - name: add user
-     action: user name={{ user }} password=faJxjj/6hKXPs update_password=always shell=/bin/bash home=/home/{{ user }}
-  tags:
-   - user
-
-ansible ljtest -m user -a "name=ljtest state=absent remove=yes" # 用户信息没有完全删除干净
-   
-#没有试过
-#tags用于让用户选择运行或路过playbook中的部分代码。ansible具有幂等性因此会自动跳过没有变化的部分即便如此有些代码为测试其确实没有发生变化的时间依然会非常地长。此时如果确信其没有变化就可以通过tags跳过此些代码片断。 
+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

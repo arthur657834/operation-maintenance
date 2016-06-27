@@ -1,36 +1,26 @@
-http://docs.grafana.org/v2.0/installation/rpm/
-http://www.aikaiyuan.com/10263.html
-https://github.com/alexanderzobnin/grafana-zabbix/wiki/Usage
-http://www.tuicool.com/articles/b2miiuJ
-
-grafana-server图形化配置
-http://www.aikaiyuan.com/10255.html
-http://www.aikaiyuan.com/10263.html
-
-yum -y install https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.2-1.x86_64.rpm
-git clone  https://github.com/alexanderzobnin/grafana-zabbix/
-cp -r grafana-zabbix/zabbix/  /usr/share/grafana/public/app/plugins/datasource/
-vi /usr/share/grafana/public/app/plugins/datasource/zabbix/plugin.json 
-配置zabbix帐号密码（要有读权限）
-
-vi /usr/share/zabbix/api_jsonrpc.php
-在
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Headers: Content-Type');
-header('Access-Control-Allow-Methods: POST');
-header('Access-Control-Max-Age: 1000');
-之前加以下两行
-require_once dirname(__FILE__).'/include/func.inc.php';
-require_once dirname(__FILE__).'/include/classes/core/CHttpRequest.php';
-
-service zabbix-server restart
-service grafana-server start
-
-http://192.168.1.10:3000/login
-默认账号密码 admin/admin
-
-group 就是 configuration中的host groups
-
-filter: 不要idel数据 CPU\s(?!idle)
-
-
+U2FsdGVkX18qvIvNaGVgYbiyra23274UTz00IEmXNFj1V5bMtxwtSZFzbrmv2Ve6
+GLjUk3b2xWGzwvl3TgkfrSf9LaCDjvC5th0XI8CE4d0G/fhgLmlK+1afeHCpZbHA
+QJhjXPb3+lQmSnDTQFSp+S70/sq/URS65WxeAeGmhr1WZbBAB2ZxSXlMiuX5VdiG
+Yr9Kz5YHtqS6a0Tt+yKuNc7u4bU8DwNhWwyGU8Ixxbbv7qOr8MxSueeWaj3WN6BU
+pN4SYkj8e7QE2y3N5GhPDTEAgdcDbfTJ7mAOrqbydeHdpHnD5iJ3HlJIrr04JXAV
+lBSPzBjd/9ReiS4+P57/L0KD5gnqn1LQfDfZohr1JQhKXL9WaV6IemCgMVnVxWGu
+4ebw+vCMjIC7onKlNcdw1eLVfc4ptEFh/NjSyByIXDufGp1vsYxVL/l/vlebVTg9
+VvDsC0YvRwvdgQrR1p/W9zDq3FGDlw41QjGMbGSqgYAp0zXG6ytfvGOxekJ/6mIM
+Wi/QoS2w82JlcVN5tX1b/q2Y0ZCwyuOQhkzxfyGQ35TAQysTj+DVO2qwTw678oLA
+2VwdqTOx5Ukj7vcz7V/Xcqrt+6nPgoaKxBMbBzMinnPArG7PvsApddhy9LjMeGij
+C+3vjsPdQ7YRdmUtqkx0Mk+p7VP2hORU4cjbIlaKABBQA1oWZ6FtoxRsWmjUgEJs
+HLiUHltNN0n1G4eV/jp/Py7E+EptKIA7m5ngroRRSMXdFaMANjt4swWonrnX4Xg1
+HLxIkzqxo67X2oiymkoty+svsZNa8S0tBPxf6d0dOGqILFDbtMILc06D7XScI6PB
+YDO7LBaQSSzaI0YWN/s5+pp7R1u9oCm1HV4a7tSoKv2MX852m0lNA1f9QyQOSeyq
+3PiImwykjtKAtWjZmK7+BaUCLIWYBiS/den9WojdsyRxmFYfz9o5mfzxRoiEkV4X
+iZdaIu7rLpVNtGHQHbJNB3/Xw7MIBY1Qm0497R5UWwydKXjOcArcAr6HmTxni+u6
+uM/TTxH99itC4A3DnIlxYTlnVCGq9cAodravAbPtHyWnXBAjB/XqXVdAkq6CvabS
+8F1BiRCA1UlW5P0O5DRT5Jtpr7b6aUQiH2Gt7KSUi+7u5MixZMfp49PdVbjv13d3
+yXlyO9E8Bw5GjGqn1uoFl0f/pMrvZH7qkC83dksclK4Zo/p5ThH22StRBtHnfzQp
+VoKMakIlNOba8UVW5s5QmddcAwknSPpzm+pKgRhVQkkqGtNTzjRlaSBb4Ahg65+U
+ufQRxHPPmkLP8qY/elV5J7FaMrKrII5NnjqBNJV9u5zbRqr/xl8RMXHi5T7Hi2sM
+HooBLs7ziA/deQCtDjC8p2Hk+8xQfOf7JVDL6YcrvVjfCVW3rjborJblM2euwlrU
+kOEn5RzwlVKtKUQQEK7ILbWPDhSxEcmE2WxLB24DdF0lxoazz78iqU67a5z0zf6+
+VjpxLhiIIeW/Xv89ujD3MUQYiSX4EKRQu30Z6GMht3yTIxFeuggra9xIQg9pBN3h
+0pMJddZtuVl3KSkPcetAg7POzU55ZX3VQ6DoiCBuhsDd/I6nY3DGb3fv1A120Ore
+gO+/eDAzS9viZwAoDyQLJWfEbksv3NhdSmoifRpXmTXUe49Fhv9z5Q==

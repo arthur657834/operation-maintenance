@@ -1,10 +1,7 @@
-yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker -y
-
-wget https://github.com/git/git/archive/master.zip
-unzip master.zip
-cd git-master/
-./configure --prefix=/usr/bin
-make configure
-make install
-cp git /usr/bin
-git --version
+U2FsdGVkX1/jdfOBOmhbu1VpbgZ1e2tkzS6j4qcTY5XIZPXh30sh0JBw3P9+zFlH
+PXnSjzGiPz4a1L6PLFPbecXNPLsWWhO9u3IH4BWl7qwg5sSVYBby5vzfd7/7MCjv
+xMyIQNuAiynjRgm2uA9Noon9PjJXKKYMWWDGd5A7KfW6tEQONHRH4d9f0JwmcDLd
+RM5GKvs+kE9I2up1pfVyyWcmH20vEFn6h6P/0t7UtFxJ2XOGLjE8xXxWaTEeq6gw
+v09XH6S/whIhbVCLihWMjMGInsnZS2ERVDAXX0ZZkR7zsYzsrT2Z4gCBQJRyCua6
+0Vc4PhCrQfyiHkc9M3jGETojdZLUaZzrJBq+NZLiDoLzdu8PZyEjdg0dvZ4sDcOP
+Kkqq9UXkDyMpGZ9ydb5SEQ==
