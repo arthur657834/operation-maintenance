@@ -1,26 +1,36 @@
-U2FsdGVkX19yZmzYPns1KWxzSGWFg5pdePzO8u3bNNrG7vWQC9DYSFDVI/lEjYl6
-O0WprQy+4Zi97Hk42yTNBHPzbOyIia2WJCl0wtChUzuhDfye/1RW0NcFQeGeLubN
-3WdxCTxOnp7ab1geogF+xyHFFlnfjFrK4fSU4iW291FeNREPLH4F0uAmhz0l3VP9
-DrY8n6mYsI0ElyFAr6ztsJ0DV81vSCRo9+QpuKiGZV1gXump9JNiSAMZx3Y1oPTj
-SEHDLc5k0Tw/mPcjlH6WLaS0tL3GposVccQ7d404EaljdJpi4rOJxwUafpbrQasx
-wtZAzQ3jHpiExALTDxnYPSay1v3wXUY3gOIiwU0HIbIJejk9Fa9bswvdzoa3ZvHR
-VwXWwBUhxVoHds11vcgeFgs/Q+QgWj5FRpkbC6hSoYAygOqRM4gTGs8ww5KnDgUv
-TNdzABZ7B3OGxJwiQMXd72JWFtLDVoLmaqum7lpdVjFMAq6PnGoDy+qKCBNyAYzE
-lPdzWtjrAL/0pFwBwZVYL6prWrum/8D6tiiY9MP4YIkemqftatH1ifcziWqA2Qst
-/1O2rzRUijKNenNA8RnJqKvp4hTRDrw0No9B/TQFj8eN+Z9rQ8MIQutfYIqJeNrC
-R5LDLH/qZBye1dFXou8NJ7mhDv7D8sEWPivgCXGCYRZT8aeXM8fZsCuW6edFEI36
-370+NiOkne1HHjrN0RABqmx/jswbmXh52ummFSN1u2GNKE1Cc25Vx8DTvFjEZb74
-64H9j8Yyd4pyS9lC9RjX76mdzGKj/3VyQKDeLECkkbSFb5eaNprLmiJcZPbaE3tQ
-hg6buEb2oQJoa0RNzsDaBrk/DKdNPwyZ0n8IoatGLkA/5dOHkdupWKRgqGOAiXwO
-lGQ7knJQ7xfLkhPhcf3HwZk5uAHp7n/XJB8aZXPOkvYCpapH+R8SAcblNlSyuwuz
-gHRsw15O3H7IUzrWNitR2cRryfCMx3mYkuLjvHItb69gn8e/vokkynROszsf8MuA
-1ke4Yk+J1uaA/RzEpYr4SkUUEadf8DchFB/0LYKGO30oIPhSOGgIUzHfuLuUcBvV
-zYsQqeC0KArRLTkG4HvOxWG4a7JOKIO7qZf782stLBoCZQYqMf70hfzPkM6Gm0fn
-qvVCKZ7wfStP1s1sEYGBqBx7nGb73UcZdzI3K7qz22IpDDbFiRewdlAGhzJtk97+
-Ozlg+3jY8aUrL/1DL8xoji3J3wzOkPe6CYI25uvwW8O6gUmQY3DuZXVcQOKo/wJ0
-xOI/y2QbayoMR12grBbQIlNpzQEY39CFf0DX3DDfQOEb5XRy/wVkS/Zokrqdf/kR
-xKxh5wJxjAwI+pfdoZtztamZa3jQeBIstFd8wbmT4rqLf6bQxd0J7cyJ/vQYff0V
-uaBHecIxwpIIwMXdxfA2Ie/jLVJtbCvuvdZ3QuHRNcCokBzYyJwk/Mt/un++XCyz
-S/yn8M7tS2XTaIzsgC8OXScJY6WBJBC25CqwUA3+San5/a1AZKE6hp+zfSZ0ff2V
-O2lrxh6qg2eI2EGBb4U3jQb/Eyz0fveeV2wVOuVcmWRqj6Uo482Ect5HDUwQO7vF
-2xJvhpczDZclaXqIdoYllicgODEY5yOVH25eAtq4UKu3aNn2rdBqXQ==
+http://docs.grafana.org/v2.0/installation/rpm/
+http://www.aikaiyuan.com/10263.html
+https://github.com/alexanderzobnin/grafana-zabbix/wiki/Usage
+http://www.tuicool.com/articles/b2miiuJ
+
+grafana-server图形化配置
+http://www.aikaiyuan.com/10255.html
+http://www.aikaiyuan.com/10263.html
+
+yum -y install https://grafanarel.s3.amazonaws.com/builds/grafana-2.0.2-1.x86_64.rpm
+git clone  https://github.com/alexanderzobnin/grafana-zabbix/
+cp -r grafana-zabbix/zabbix/  /usr/share/grafana/public/app/plugins/datasource/
+vi /usr/share/grafana/public/app/plugins/datasource/zabbix/plugin.json 
+配置zabbix帐号密码（要有读权限）
+
+vi /usr/share/zabbix/api_jsonrpc.php
+在
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Max-Age: 1000');
+之前加以下两行
+require_once dirname(__FILE__).'/include/func.inc.php';
+require_once dirname(__FILE__).'/include/classes/core/CHttpRequest.php';
+
+service zabbix-server restart
+service grafana-server start
+
+http://192.168.1.10:3000/login
+默认账号密码 admin/admin
+
+group 就是 configuration中的host groups
+
+filter: 不要idel数据 CPU\s(?!idle)
+
+

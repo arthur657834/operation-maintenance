@@ -1,8 +1,13 @@
-U2FsdGVkX1/fPuq4+XZB5XqyiKP8dTCi9RjCX+8yFSBlQ9T+8vdifWGkRBproB0Q
-eu84AIYg2Q+GRAfGyrFLst/MCQ/QhYN2EcN5Y/1s8zv3Fp7IAYg0PZvlf8DDAK9P
-WnDZKfZJGbBs8c0XDB3kQh4Ui/Vs5pAHCXos9MJGtgRCDGtleOOLYk7p0Xsjlqh4
-dkONKwMhLIhDNe+1GTjvcDARr5I+TagTYqBAMuDm1LU/kMtraneSBWgRcyGqlgHM
-13VmKHzIJtszbbq9vZb2RepoV5jwbZzO2w1kHmMuVFTT+sQbLDCfXBh9bdWHcES1
-zBZSulqGlEGWVthqGwiuHh8m0BDnAFW3fosAGGMAdLcUPYx3eEcCRjSPoOP1fUYt
-oR96yfBk0yDQGcqCcFoNNeMawbAAjPM0rbUSKIKAQDbolaU4o2gmmyQHI3GSmoey
-1sP+aGv3urUbCEb0MEcX0hFRl2mOZq/l
+sc create test3 binPath= "C:\Users\Administrator\Desktop\win32srvDemo\win32srvdemo\Debug\win32srvDemo.exe"  
+
+sc config test3 start= AUTO  
+net start test3  
+net stop test3 
+sc delete test3 
+
+sc config 服务名 start=AUTO    (自动)
+
+sc config 服务名 start= DEMAND  (手动)
+
+sc config 服务名 start= DISABLED(禁用)
+

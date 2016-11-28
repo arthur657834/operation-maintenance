@@ -1,4 +1,4 @@
-U2FsdGVkX1/heVf/U1C9W9y1oAiBZYKUNOaPBcS44n6JeaRP+C2Jw1qEvnNP7GnL
-lzqiRAnK1EKfCy3s1m1VnpAwZFDH/vGRDdpUxj7UGKGZFi8Ybr6QTDUtZiUIVVB8
-bV7XPJADAsyouwgKb+hm1FEZZyj8RyaficEmnJGfLwRSwEt8IXnVDaGM9VvK4AvN
-twsuc8179WalcYSRO/TrXA==
+echo -e "TZ='Asia/Shanghai';\nexport TZ" >> /etc/profile
+source /etc/profile
+
+yes | cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime 

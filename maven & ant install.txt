@@ -1,14 +1,21 @@
-U2FsdGVkX1/twFYKGxGxDH9A1qCZITCYvQuxbGRR13uRMeTWdMaO+3nasy5wkuz7
-GXALIoSCe4oCZoKyn04y7isSKl5pQarmxrqRrSIUuH64qcTTdTpqiG81P6XtDIvT
-/T2wz2X0afa04JTLBBk6bl8fYPFfsofECsFWZdW1NApGVnE7bm128qyctk74xxT+
-aCT5bH9PV8zCTGYiCDR99xsNLRsTfJrSHmUEikNUqjM2RnCiV9ym1A+hkPqCPVrg
-Mc+Bb+Ik6f13gafrafwFIY/LY9C+KG6phwvxguK1Tb05chfz9jTSLTyfRYahaGkM
-RTV8JX8PM32sV+Ob8eLc785KA+QNkrYhiqefA9SSQ+5l7dt6qo/PIWD0/a90p6zy
-wx6gvp3eaM10y6ZYNREHU9qy2QTTJuCRUegHOW0p9bwvga7qcBt32vXaRC/VjGV4
-rX6o+haxs9aEzdsB/8ETgrIERTMJmB20AbkFHtgcywaiE7xDbPM34g4aI9nrCDta
-+9nDMRJEgbEBNydc0jvoR3nwkEQliUdOvCKXZi84WgPyieT8CBhXpNjqkDSUtJRh
-Q7+HyhDk10IW4DSeVoMU0QK1IAhsRSIj4SYcONYRMOSaDAjO6sn0ckJODDguKY1i
-h0gRus7X6/jsJOC6+RNpIkitSvTm9EWWF+jEWN0GMx6DYu8Fx8rmIYcEs5jFb2Yx
-zmF6SayLpeONEeWqMpgWkH/oB2TontN+HiYTVs+JL2k9oJgQvsbxp0dqlqA7AEDg
-nLehrtUJBqFkPZOZ3sH/GB/dsENP/Cul/aQ2aarbvUlFzrdDdT24hWixSDY5wwRi
-DEWerfMRuMABcHl445ET+MDPPvNcU0+5xi8CqfYjEAgvHyR1vaU+gcdAfscRY3d4
+
+yum -y install  python-devel libcurl libcurl-devel zlib-devel apr-devel subversion-devel cyrus-sasl-md5 python-boto
+
+wget http://mirror.nexcess.net/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.zip
+unzip apache-maven-3.3.9-bin.zip 
+mv apache-maven-3.3.9 /opt/maven
+ln -s /opt/maven/bin/mvn /usr/bin/mvn
+mvn -v
+
+
+wget http://mirrors.cnnic.cn/apache//ant/binaries/apache-ant-1.9.6-bin.zip
+unzip apache-ant-1.9.6-bin.zip 
+mv apache-ant-1.9.6 /usr/ant/
+chmod -R +x /usr/ant/
+echo export ANT_HOME=/usr/ant >>/etc/profile
+echo export PATH=$JAVA_HOME/bin:$ANT_HOME/bin:$PATH >>/etc/profile
+source /etc/profile
+
+ant -version
+
+

@@ -1,7 +1,10 @@
-U2FsdGVkX1/+703lrXpo5BKnIoERxpTexLzLOgkEHvO0DNfVGo3ObTAo17Ijm1nv
-rlGEDn2sv+ORMQjlEerolfMiSr3FEbwrOipsEpzSLMC8ofjIEuklstYrKohkuOko
-rkW4RvD+JAGd6WNW0b6zW8GEcaKQibHgk2xYVlQt8eXlOQe4eRIUDvAHLC9h3Z/9
-Wj6hXL+ZdGnz+UkFDIUqDNGIQHSWgjpu7YuvFUO2VnxgAT2VlnS2XGip7W5RMAMd
-FrsCdxaljk6wAli3DsZOW74EO7FIdRaPJVK9fh6gkwd1OPao85g4cVF/TSCMcvSN
-tFUQblgqpC7HvBK8+z6IhGRJPZMy41II4SMhoTKWKvl4ZtTT9YzrasCB76iiCZoz
-YpXPNo9XxtxmYXBACuFGcQ==
+yum install curl-devel expat-devel gettext-devel openssl-devel zlib-devel gcc perl-ExtUtils-MakeMaker -y
+
+wget https://github.com/git/git/archive/master.zip
+unzip master.zip
+cd git-master/
+./configure --prefix=/usr/bin
+make configure
+make install
+cp git /usr/bin
+git --version
