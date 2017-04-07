@@ -17,7 +17,7 @@ npm install --save hubot-telegram
 ./bin/hubot -a telegram
 
 #scripts下放着执行命令
-
+```js
 module.exports = (robot) ->
   robot.hear /badger/i, (res) ->
     res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
@@ -32,5 +32,5 @@ module.exports = (robot) ->
 
   robot.hear /I like pie/i, (res) ->
     res.emote "makes a freshly baked pie"
-    
+```    
 https://github.com/arthur657834/hubot-scripts
