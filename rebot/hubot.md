@@ -2,13 +2,13 @@ https://hubot.github.com/docs/scripting/
 https://hubot.github.com/docs/adapters/
 
 npm install -g yo generator-hubot
-
+```shell
 mkdir -p myhubot /root/.npm/hubot-help
 chmod g+rwx /root /root/.config /root/.config/configstore myhubot 
 chmod -R g+rwx /root/.npm
 cd myhubot
 yo hubot
-
+```
 什么是 adapter ？ 
 所谓的 adapter 其实是一些让机器人接收输入的接口。
 
