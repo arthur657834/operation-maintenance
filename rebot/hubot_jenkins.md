@@ -17,10 +17,12 @@ myhubot jenkins list <filter> - lists Jenkins jobs
 ```
 
 Tip: 如果要使用 build 要关闭系统设置中的 防止跨站点请求伪造
-
+```
 hubot获取jenkins构建通知:
+npm install --save hubot-jenkins-notifier
+Add it hubot-jenkins-notifier to your external-scripts.json file in your hubot directory
 jenkins安装插件Notification plugin
-
+```
 ![jenkins_config](jenkins.jpg)  
 
 http://10.1.50.250:8080/hubot/jenkins-notify?room=general&trace=1
