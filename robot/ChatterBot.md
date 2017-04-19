@@ -41,7 +41,7 @@ while True:
     except (KeyboardInterrupt, EOFError, SystemExit):
         break
 ```
-
+```
 chatterbot.train(
     "chatterbot.corpus.english"
 )
@@ -93,3 +93,4 @@ logic_adapters=[
                 'output_text': 'Ok, here is a link: http://chatterbot.rtfd.org/en/latest/quickstart.html'
             }
         ],
+```
