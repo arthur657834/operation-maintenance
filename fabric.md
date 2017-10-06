@@ -27,6 +27,8 @@ fabric.colors  #提供彩色输出, 导入后, green(text, bold=False)，支持�
 @parallel      #装饰器，可以并行运行任务，pool_size=5为最大并行运行任务的个数
 @serial 串行
 @runs_once
+@hosts('host1', 'host2')   #使用host修饰来制定 host my_hosts = ('host1', 'host2')  @hosts(my_hosts) 
+
 shell_env(JAVA_HOME='/opt/java')
 ```
 
@@ -99,7 +101,7 @@ def task():
  ```
  
  
- command：
+ # command：
  ```
  fab dd #执行命令
  
