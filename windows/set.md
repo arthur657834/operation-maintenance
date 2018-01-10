@@ -37,7 +37,7 @@ ping -n 1 127.0.0.1>nul
 set /p a=^><nul
 )
 set /p a=]<nul
-rem ^> 输出>
+rem ^> 输出> ^也可用作续行符
 rem <NUL是指将NUL转给A(取消等待输入)
 pause
 ```
