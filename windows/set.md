@@ -23,3 +23,20 @@ set src=www.baidu.com.cn
 set des=%src:~1,2% / set des=%src:~-5%
 取前1,2 / 取最后5个
 ```
+
+```bat
+ex1.
+@echo off
+CLS
+color 9f
+echo 0%%  50%%  100%%
+set /p a=[<nul
+for /l %%a in (1,1,36) do (
+ping -n 1 127.0.0.1>nul
+set /p a=^><nul
+)
+set /p a=]<nul
+rem ^> 输出>
+rem <NUL是指将NUL转给A(取消等待输入)
+pause
+```
