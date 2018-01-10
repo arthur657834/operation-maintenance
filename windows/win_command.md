@@ -126,5 +126,44 @@ color 02 // 将背景色设为黑色，将字体设为绿色
 
 mode con cols=113 lines=15
 改变cmd窗口的大小
+
+choice /c:1234 /m:"please select"
+if %errorlevel%==4 goto end
+
+rem 1.获取批处理自身的完整路径
+echo %0
+rem 2.获取批处理自身的完整路径，并去掉首尾的引号
+echo %~0
+rem 3.获取批处理自身的文件名和后缀名
+echo %~nx0
+rem 4.获取批处理自身的文件名
+echo %~n0
+rem 5.获取批处理自身的后缀名
+echo %~x0
+rem 6.获取批处理自身的完整路径，不含文件名
+echo %~dp0
+rem 7.获取批处理自身的盘符
+echo %~d0
+rem 8.获取批处理自身的大小
+echo %~z0
+rem 9.获取批处理自身的修改时间
+echo %~t0
+
+@echo off
+call :label
+echo 1
+echo 2
+
+:label
+echo 3
+echo 4
+执行结果为
+3 4 1 2 3 4
+
+start与call的不同
+对于start，概况二句话：“不同进程不能传值”，“相同进程单向传值，老子传儿子，非儿子传老子”
+对于call，“同一进程，变量互通”。
+
+
 ```
 
