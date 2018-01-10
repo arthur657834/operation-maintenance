@@ -26,6 +26,7 @@ set des=%src:~1,2% / set des=%src:~-5%
 
 ```bat
 ex1.
+进度条
 @echo off
 CLS
 color 9f
