@@ -156,6 +156,18 @@ echo %~z0
 rem 9.获取批处理自身的修改时间
 echo %~t0
 
+set p=aa1bb1aa2bb2      #设置变量p，并赋值为 = 后面的字符串，即aa1bb1aa2bb2
+echo %p%                #显示变量p代表的字符串，即aa1bb1aa2bb2
+echo %p:~6%             #显示变量p中第6个字符以后的所有字符，即aa2bb2
+echo %p:~6,3%           #显示第6个字符以后的3个字符，即aa2
+echo %p:~0,3%           #显示前3个字符，即aa1
+echo %p:~-2%            #显示最后面的2个字符，即b2
+echo %p:~0,-2%          #显示除了最后2个字符以外的其它字符，即aa1bb1aa2b
+echo %p:aa=c%           #用c替换变量p中所有的aa，即显示c1bb1c2bb2
+echo %p:aa=%            #将变量p中的所有aa字符串置换为空，即显示1bb12bb2
+echo %p:*bb=c%          #第一个bb及其之前的所有字符被替换为c，即显示c1aa2bb2
+set p=%p:*bb=c%         #设置变量p，赋值为 %p:*bb=c% ，即c1aa2bb2
+
 @echo off
 call :label
 echo 1
